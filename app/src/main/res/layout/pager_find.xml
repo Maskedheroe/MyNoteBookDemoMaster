@@ -24,6 +24,8 @@
             android:layout_width="0dp"
             android:layout_weight="0.9"
             android:layout_height="40dp"
+            app:defaultQueryHint="请输入你想搜索的题目"
+
             android:background="@null"
             >
         </scut.carson_ho.searchview.SearchView>

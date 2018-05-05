@@ -10,4 +10,7 @@
         <mapping class="com.example.asus.mynotebook.model.UserBean"></mapping>
         <mapping class="com.example.asus.mynotebook.model.CollectionBean"></mapping>
     </list>
+    <!--其中Notebean和UserBean是多对一的关系-->
+    <!--   CollectionBean和UserBean是多对多的关系-->
+    <!--数据库四张表单-->
 </litepal>
