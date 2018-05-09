@@ -16,6 +16,7 @@ import com.example.asus.mynotebook.model.CollectionBean;
 import com.example.asus.mynotebook.presenter.DataOfmain;
 import com.example.asus.mynotebook.presenter.GlideImageLoader;
 import com.example.asus.mynotebook.presenter.notepager.MynotesAdapter;
+import com.example.asus.mynotebook.utils.GuidFloat;
 import com.example.asus.mynotebook.view.activity.NoteDetails;
 import com.example.asus.mynotebook.view.activity.WriteNoteActivity;
 import com.example.asus.mynotebook.view.interfaces.BasePager;
@@ -71,6 +72,8 @@ public class NotePager extends BasePager {
 
             }
         });
+
+        GuidFloat.addGuide(mactivity,"GuidTakeNote",takeNotes,R.layout.view_guid_note);
 
         takeNotes.setOnClickListener(new View.OnClickListener() {
             @Override

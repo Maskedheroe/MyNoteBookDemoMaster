@@ -23,6 +23,7 @@ import com.example.asus.mynotebook.model.NoteBean;
 
 import com.example.asus.mynotebook.presenter.notepager.NoteOnLongClickListener;
 import com.example.asus.mynotebook.utils.DrawableToBytes;
+import com.example.asus.mynotebook.utils.GuidFloat;
 
 import org.litepal.crud.DataSupport;
 
@@ -82,6 +83,8 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
                 return true;
             }
         });
+
+
 
         viewHolder.collection.setOnClickListener(new View.OnClickListener() {
             @Override

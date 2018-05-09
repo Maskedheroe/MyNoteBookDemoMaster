@@ -25,7 +25,7 @@ import shem.com.materiallogin.DefaultRegisterView;
 import shem.com.materiallogin.MaterialLoginView;
 
 /**
- * 用户登陆与注册逻辑
+ * 用户登录与注册逻辑
  * Created by asus on 2018/2/3.
  */
 
@@ -73,17 +73,17 @@ public class MyLogin {
                     UserBean userBean = userBeans.get(0);
                     if (userBean.getUserPwd().equals(loginPass.getEditText().getText().toString())) { //litePal的查找逻辑
                         if (userBean.getId()== Flags.currentAccount){
-                            Toast.makeText(mactivity, "已经登陆，不可重复登陆", Toast.LENGTH_SHORT).show();  //判断重复登陆的逻辑
+                            Toast.makeText(mactivity, "已经登录，不可重复登陆", Toast.LENGTH_SHORT).show();  //判断重复登录的逻辑
                             ml_login.setVisibility(View.INVISIBLE);
                             return;
                         }
                         loginsuccess(userBean, mactivity);
                     }else {
-                        Toast.makeText(mactivity, "登陆失败，用户名或密码错误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mactivity, "登录失败，用户名或密码错误", Toast.LENGTH_SHORT).show();
                         loginPass.getEditText().setText("");
                     }
                 }else {
-                    Toast.makeText(mactivity,"登陆失败,用户名不存在",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mactivity,"登录失败,用户名不存在",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -104,7 +104,7 @@ public class MyLogin {
                             Toast.makeText(mactivity, "注册成功", Toast.LENGTH_SHORT).show();
                             Flags.USER = userBean;
                             if (Flags.currentAccount != -1) {
-                                Toast.makeText(mactivity, "现在已登陆" + userBean.getUserName() + "账号", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mactivity, "现在已登录" + userBean.getUserName() + "账号", Toast.LENGTH_SHORT).show();
                             }
                             loginsuccess(userBean, mactivity);
                         } else {
@@ -193,7 +193,7 @@ public class MyLogin {
                     UserBean userBean = userBeans.get(0);
                     if (userBean.getUserPwd().equals(loginPass.getEditText().getText().toString())) { //litePal的查找逻辑
                         if (userBean.getId()==Flags.currentAccount){
-                            Toast.makeText(mactivity, "已经登陆，不可重复登陆", Toast.LENGTH_SHORT).show();  //判断重复登陆的逻辑
+                            Toast.makeText(mactivity, "已经登录，不可重复登陆", Toast.LENGTH_SHORT).show();  //判断重复登录的逻辑
                             ml_login.setVisibility(View.INVISIBLE);
                             return;
                         }
@@ -201,11 +201,11 @@ public class MyLogin {
                         Toast.makeText(mactivity,"管理员登陆",Toast.LENGTH_SHORT).show();
                         Flags.CURRENT_STATUS = 1;
                     }else {
-                        Toast.makeText(mactivity, "登陆失败，用户名或密码错误", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mactivity, "登录失败，用户名或密码错误", Toast.LENGTH_SHORT).show();
                         loginPass.getEditText().setText("");
                     }
                 }else {
-                    Toast.makeText(mactivity,"登陆失败,用户名不存在",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mactivity,"登录失败,用户名不存在",Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -221,7 +221,7 @@ public class MyLogin {
                             .find(UserBean.class).isEmpty()) {  //判断用户名是否存在
                         if (userBean.save()) {//判断注册成功
                             Toast.makeText(mactivity, "注册成功", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(mactivity, "管理员登陆", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mactivity, "管理员登录", Toast.LENGTH_SHORT).show();
                             Flags.CURRENT_STATUS = 1;
                         }else {
                             Toast.makeText(mactivity,"注册失败",Toast.LENGTH_SHORT).show();

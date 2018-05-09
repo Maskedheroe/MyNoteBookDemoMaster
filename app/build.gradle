@@ -66,4 +66,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'  //黄油刀
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    compile ('com.github.huburt-Hu:NewbieGuide:v2.1.0') {
+        exclude group: 'com.android.support'
+    }
 }

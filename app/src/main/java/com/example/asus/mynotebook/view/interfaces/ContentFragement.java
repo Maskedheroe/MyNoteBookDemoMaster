@@ -7,9 +7,11 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.asus.mynotebook.R;
+import com.example.asus.mynotebook.utils.GuidFloat;
 import com.example.asus.mynotebook.utils.NoScrollViewPager;
 import com.example.asus.mynotebook.view.interfaces.BaseFragrment;
 import com.example.asus.mynotebook.view.interfaces.BasePager;
@@ -31,6 +33,7 @@ public class ContentFragement extends BaseFragrment {
     private NoScrollViewPager content;
     private ArrayList<BasePager> mPagers;
     private final FragmentManager mFragmentManager;
+    private RadioButton mine;
 
     public ContentFragement(FragmentManager fm) {
         mFragmentManager = fm;
@@ -41,6 +44,7 @@ public class ContentFragement extends BaseFragrment {
         View view = View.inflate(mActivity, R.layout.fragment_main_content, null);
         group = view.findViewById(R.id.rg_group);
         content = view.findViewById(R.id.vp_content);
+        mine = view.findViewById(R.id.rb_mine);
         initData();
         return view;
     }
@@ -52,6 +56,8 @@ public class ContentFragement extends BaseFragrment {
         mPagers.add(new FindPager(mActivity,mFragmentManager));
         mPagers.add(new NotePager(mActivity,mFragmentManager));
         mPagers.add(new MinePager(mActivity,mFragmentManager));
+
+        GuidFloat.addGuide(getActivity(),"GuidMine",mine,R.layout.view_guid_mine);
 
         content.setAdapter(new ContentAdapter()); //ViewPager需要设置适配器
 

@@ -17,6 +17,7 @@ import com.example.asus.mynotebook.flags.Flags;
 import com.example.asus.mynotebook.model.CollectionBean;
 import com.example.asus.mynotebook.model.NoteBean;
 import com.example.asus.mynotebook.presenter.findpager.FindRecyclerAdapter;
+import com.example.asus.mynotebook.utils.GuidFloat;
 import com.example.asus.mynotebook.view.interfaces.BasePager;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
@@ -64,6 +65,7 @@ public class FindPager extends BasePager {
         searchSpinnerList.add("题库");
         searchSpinnerList.add("错题");
         sp_search.setItems("题库","错题");
+        GuidFloat.addGuide(mactivity,"serach",search,R.layout.search_guid);
         search.setOnClickSearch(new ICallBack() {
             @Override
             public void SearchAciton(String string) {

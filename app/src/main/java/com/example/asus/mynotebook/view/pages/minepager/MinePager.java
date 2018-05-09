@@ -12,12 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.hubert.guide.NewbieGuide;
+import com.app.hubert.guide.model.GuidePage;
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.bumptech.glide.Glide;
 import com.example.asus.mynotebook.R;
 import com.example.asus.mynotebook.flags.Flags;
 import com.example.asus.mynotebook.presenter.minepager.MyLogin;
 import com.example.asus.mynotebook.presenter.minepager.UpdatePwd;
+import com.example.asus.mynotebook.utils.GuidFloat;
 import com.example.asus.mynotebook.view.activity.UpdateIcon;
 import com.example.asus.mynotebook.view.interfaces.BasePager;
 
@@ -76,6 +79,9 @@ public class MinePager extends BasePager {
                 }
             }
         });
+
+        GuidFloat.addGuide(mactivity,"GuidLogin",login,R.layout.view_guid_login);
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
