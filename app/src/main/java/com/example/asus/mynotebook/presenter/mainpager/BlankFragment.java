@@ -65,9 +65,10 @@ public class BlankFragment extends Fragment {
     public void initNoteCollections(RecyclerView noteCollections) {
         noteCollections.setLayoutManager(new LinearLayoutManager(getContext()));
         noteCollections.setAdapter(new MainRecyclerAdapter(getContext(),getData(course)));
+
     }
 
-    private ArrayList<CollectionBean> getData(String course){
+    public static ArrayList<CollectionBean> getData(String course){
         ArrayList<CollectionBean> noteList;
         switch (course){
             case "数学":

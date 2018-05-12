@@ -17,8 +17,10 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.bumptech.glide.Glide;
 import com.example.asus.mynotebook.R;
 import com.example.asus.mynotebook.flags.Flags;
+import com.example.asus.mynotebook.model.CollectionBean;
 import com.example.asus.mynotebook.model.NoteBean;
 import com.example.asus.mynotebook.model.UserBean;
+import com.example.asus.mynotebook.presenter.mainpager.BlankFragment;
 import com.example.asus.mynotebook.presenter.notepager.AddPhotos;
 import com.example.asus.mynotebook.presenter.notepager.GridAdapter;
 import com.example.asus.mynotebook.utils.SpinnerUtil;
@@ -42,12 +44,14 @@ public class WriteNoteActivity extends AppCompatActivity implements View.OnClick
     private MaterialSpinner spinner;
     private String currentCourse;
     private ImageView iv_note;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_note);
         initView();
+        key = getIntent().getExtras().getString("key");
     }
 
     private void initView() {
@@ -87,6 +91,12 @@ public class WriteNoteActivity extends AppCompatActivity implements View.OnClick
                     Glide.with(this).load(Uri.fromFile(new File(icon))).into(iv_note);
                     NoteBean noteBean = new NoteBean(writetitle.getText().toString(), currentCourse, writetext.getText().toString(), Flags.currentAccount, icon); //存储方法
                     if (noteBean.save()) {
+                        if (Flags.CURRENT_STATUS == 1 && key.equals("manager"));{
+                            ArrayList<CollectionBean> data = BlankFragment.getData(currentCourse);
+                            if (data!=null){
+                                data.add(new CollectionBean(writetitle.getText().toString(),currentCourse,iv_note,-1,true));
+                            }
+                        }
                         new SVProgressHUD(this).showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
                         //执行数据存储逻辑
                     } else {

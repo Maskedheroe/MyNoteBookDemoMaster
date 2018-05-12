@@ -2,6 +2,9 @@ package com.example.asus.mynotebook.view.pages.mainpager;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,14 +14,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.example.asus.mynotebook.R;
 import com.example.asus.mynotebook.flags.Flags;
 import com.example.asus.mynotebook.presenter.mainpager.BlankFragment;
 import com.example.asus.mynotebook.presenter.mainpager.MainViewPagerAdapter;
+import com.example.asus.mynotebook.view.activity.WriteNoteActivity;
 import com.example.asus.mynotebook.view.interfaces.BasePager;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
-import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +45,7 @@ public class MainPager extends BasePager {
     private List<Fragment> fragmentList;
     private List<String> titleList;
     private MainViewPagerAdapter viewPagerAdapter;
+    private FloatingActionButton fab;
 
     public MainPager(Activity activity, FragmentManager mFragmentManager) {
         super(activity);
@@ -55,44 +60,35 @@ public class MainPager extends BasePager {
         frame_Content_Layout.addView(view);
         tablayout = view.findViewById(R.id.tabLayout);
         vp_main = view.findViewById(R.id.vp_main);
+
+        fab = view.findViewById(R.id.fab_manager);
+        initManager();
+
+
         initTablayout();
 //        if (Flags.CURRENT_STATUS!=0)//初始化添加科目
 //        initAddCourse();
     }
 
-    private void initAddCourse() {
-       /* ImageView icon = new ImageView(mactivity);
-        icon.setImageDrawable(mactivity.getResources().getDrawable(R.drawable.additem,null));
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(mactivity)
-                .setContentView(icon)
-                .build();
-        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(mactivity);
-        SubActionButton button1 = itemBuilder.setContentView(icon).build();
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(mactivity)
-                .addSubActionView(button1)
-                .attachTo(actionButton)
-                .build();*/
+    private void initManager() {
 
-        ImageView icon = new ImageView(mactivity); // Create an icon
-        icon.setImageDrawable(mactivity.getResources().getDrawable(R.drawable.additem,null));
-
-        FloatingActionButton actionButton = new FloatingActionButton.Builder(mactivity)
-                .setContentView(icon)
-                .setPosition(3)
-                .build();
-
-        SubActionButton.Builder itemBuilder = new SubActionButton.Builder(mactivity);
-// repeat many times:
-        ImageView itemIcon = new ImageView(mactivity);
-        itemIcon.setImageDrawable(mactivity.getResources().getDrawable(R.drawable.addcourse,null));
-        SubActionButton button1 = itemBuilder.setContentView(itemIcon).build();
-
-        FloatingActionMenu actionMenu = new FloatingActionMenu.Builder(mactivity)
-                .addSubActionView(button1)
-                // ...
-                .attachTo(actionButton)
-                .build();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Flags.CURRENT_STATUS != 1){
+                    new SVProgressHUD(mactivity).showErrorWithStatus("不是管理员 无法操作", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    return;
+                }
+                Intent intent = new Intent(mactivity, WriteNoteActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("key","manager");;
+                intent.putExtras(bundle);
+                mactivity.startActivity(intent);
+            }
+        });
     }
+
+
 
     private void initTablayout() {
 

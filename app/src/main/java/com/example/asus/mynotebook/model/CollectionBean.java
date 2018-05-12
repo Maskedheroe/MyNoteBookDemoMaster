@@ -2,6 +2,7 @@ package com.example.asus.mynotebook.model;
 
 import android.graphics.Bitmap;
 import android.provider.ContactsContract;
+import android.widget.ImageView;
 
 import org.litepal.crud.DataSupport;
 
@@ -18,7 +19,17 @@ public class CollectionBean extends DataSupport {
     private String date;
     private final String course;
     private final int userId;
-    private final String contentMap;
+    private  String contentMap;
+    private  ImageView imageView;
+    private boolean isImageView;
+
+    public CollectionBean(String title, String course, ImageView imageView, int i, boolean b) {
+        this.title = title;
+        this.course = course;
+        this.imageView = imageView;
+        this.userId = i;
+        isImageView = b;
+    }
 
     public Calendar getMdate() {
         return mdate;
