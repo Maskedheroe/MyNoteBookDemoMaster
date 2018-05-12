@@ -47,7 +47,7 @@ public class BlankFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("BlankFragment","展示？"+course);
+
         r = this.getContext().getResources();
         if ( view != null) {
             ViewGroup parent = (ViewGroup) view.getParent();
@@ -69,7 +69,6 @@ public class BlankFragment extends Fragment {
 
     private ArrayList<CollectionBean> getData(String course){
         ArrayList<CollectionBean> noteList;
-        DrawableToBytes drawableToBytes = new DrawableToBytes();
         switch (course){
             case "数学":
                 noteList= new ArrayList();

@@ -52,27 +52,28 @@ public class MinePager extends BasePager {
     private LinearLayout update_icon;
     private View dismissLogin;
     private LinearLayout loginExit;
+    private final View view;
 
 
     public MinePager(Activity activity, FragmentManager mFragmentManager) {
         super(activity);
         this.mFragmentManager = mFragmentManager;
         bool_initView = false;
-
+        view = View.inflate(mactivity, R.layout.pager_mine, null);
+        frame_Content_Layout.addView(view);
+        initView(view);
     }
 
     @Override
     public void initData() {
-        final View view = View.inflate(mactivity, R.layout.pager_mine, null);
-        frame_Content_Layout.addView(view);
-        initView(view);
+        System.gc();
+
         initLogIn(view);
         update_pwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (Flags.currentAccount == -1) {
                     Toast.makeText(mactivity, "未登录！", Toast.LENGTH_SHORT).show();
-                    return;
                 } else {
 
                     UpdatePwd.showDialog(mactivity, mFragmentManager);

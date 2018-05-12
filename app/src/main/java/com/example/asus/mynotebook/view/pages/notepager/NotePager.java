@@ -41,10 +41,15 @@ public class NotePager extends BasePager {
 
     public NotePager(Activity activity, FragmentManager mFragmentManager) {
         super(activity);
+        initViews();
     }
 
     @Override
     public void initData() {
+        listener();
+    }
+
+    private void initViews() {
         View view = View.inflate(mactivity, R.layout.pager_note, null);
         notes = view.findViewById(R.id.rv_mynotes);
         myNotes = view.findViewById(R.id.ll_mynotes);
@@ -57,10 +62,10 @@ public class NotePager extends BasePager {
         banner.start();
         initRecycler(notes);
         frame_Content_Layout.addView(view);
-        listener();
     }
 
     private void listener() {
+        System.gc();
         myNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
