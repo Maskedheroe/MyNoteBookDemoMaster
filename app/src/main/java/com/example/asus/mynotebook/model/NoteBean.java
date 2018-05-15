@@ -9,7 +9,10 @@ import org.litepal.crud.DataSupport;
 import java.util.Calendar;
 
 /**
- * Created by asus on 2018/1/22.
+ * Created by Wan on 2018/1/22.
+ *
+ * 笔记Bean类
+ *
  */
 
 public class NoteBean extends DataSupport {

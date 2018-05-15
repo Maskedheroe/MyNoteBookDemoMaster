@@ -24,6 +24,7 @@ public abstract class BasePager implements IBasePage{
 
     @Override
     public View initView() {
+        //子类可以重写initView方法 可以在此初始化view
         View view = View.inflate(mactivity, R.layout.base_pagers_of_main, null);
         frame_Content_Layout = view.findViewById(R.id.fl_content);
         return view;

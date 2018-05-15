@@ -33,6 +33,7 @@ import tyrantgit.explosionfield.ExplosionField;
 
 /**
  * Created by asus on 2018/2/26.
+ * 主页面的list适配器
  */
 
 public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>{

@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         //而且需要继承自V4包的Fragrment!
         transaction.commit(); //提交事务!!
 
+
     }
 
 

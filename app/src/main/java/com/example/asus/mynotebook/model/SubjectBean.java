@@ -4,6 +4,7 @@ import org.litepal.crud.DataSupport;
 
 /**
  * Created by asus on 2018/2/3.
+ * 科目Bean
  */
 
 public class SubjectBean extends DataSupport {

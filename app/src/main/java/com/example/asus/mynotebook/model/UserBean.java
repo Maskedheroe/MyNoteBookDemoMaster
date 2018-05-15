@@ -10,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by asus on 2018/2/3.
+ * Created by Wan on 2018/2/3.
+ *
+ * 账号Bean
  */
 
 public class UserBean extends DataSupport {

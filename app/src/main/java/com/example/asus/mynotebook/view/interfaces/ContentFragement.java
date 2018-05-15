@@ -56,10 +56,14 @@ public class ContentFragement extends BaseFragrment {
         mPagers.add(new FindPager(mActivity,mFragmentManager));
         mPagers.add(new NotePager(mActivity,mFragmentManager));
         mPagers.add(new MinePager(mActivity,mFragmentManager));
+        //向viewPager里添加四个页面
 
         GuidFloat.addGuide(getActivity(),"GuidMine",mine,R.layout.view_guid_mine);
 
+
         content.setAdapter(new ContentAdapter()); //ViewPager需要设置适配器
+
+
 
         group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                  @Override
@@ -82,6 +86,9 @@ public class ContentFragement extends BaseFragrment {
                      }
                  }
          });
+        /*
+        * 添加监听 点击RadioBox 可以传递事件 然后切换pager
+        * */
 
         content.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -102,6 +109,8 @@ public class ContentFragement extends BaseFragrment {
         // 手动加载第一页数据
         mPagers.get(0).initData();
     }
+
+
     //ViewPager的使用需要适配器
     class ContentAdapter extends PagerAdapter {
 

@@ -9,7 +9,9 @@ import org.litepal.crud.DataSupport;
 import java.util.Calendar;
 
 /**
- * Created by asus on 2018/2/27.
+ * Created by wan on 2018/2/27.
+ *
+ * 题库的题目bean类
  */
 
 public class CollectionBean extends DataSupport {
