@@ -21,7 +21,9 @@ import com.example.asus.mynotebook.flags.Flags;
 import com.example.asus.mynotebook.presenter.minepager.MyLogin;
 import com.example.asus.mynotebook.presenter.minepager.UpdatePwd;
 import com.example.asus.mynotebook.utils.GuidFloat;
+import com.example.asus.mynotebook.view.activity.NoteDetails;
 import com.example.asus.mynotebook.view.activity.UpdateIcon;
+import com.example.asus.mynotebook.view.activity.WriteNoteActivity;
 import com.example.asus.mynotebook.view.interfaces.BasePager;
 
 import org.litepal.tablemanager.Connector;
@@ -53,6 +55,7 @@ public class MinePager extends BasePager {
     private View dismissLogin;
     private LinearLayout loginExit;
     private final View view;
+    private View dealuser;
 
 
     public MinePager(Activity activity, FragmentManager mFragmentManager) {
@@ -114,10 +117,27 @@ public class MinePager extends BasePager {
                 }else {
                     Flags.currentAccount = -1;
                     Flags.CURRENT_STATUS = 0;
+                    Flags.USER = null;
                     circleImageView.setImageDrawable(mactivity.getResources().getDrawable(R.drawable.personal_image,null));
                     accountName.setText("");
                     new SVProgressHUD(mactivity).showSuccessWithStatus("已退出!", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
+            }
+        });
+        dealuser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Flags.CURRENT_STATUS != 0){
+                Intent intent = new Intent(mactivity, NoteDetails.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("key","user");
+                intent.putExtras(bundle);
+                mactivity.startActivity(intent);
+                } else {
+                    new SVProgressHUD(mactivity).showErrorWithStatus("不是管理员不能查看!", SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+                }
+
             }
         });
 
@@ -140,8 +160,7 @@ public class MinePager extends BasePager {
         dismissLogin = view.findViewById(R.id.ib_dismisslogin);
         loginExit = view.findViewById(R.id.login_exit);
         dismissLogin.setVisibility(View.INVISIBLE);
-
-
+        dealuser = view.findViewById(R.id.login_dealuser);
     }
 
     private void initLogIn(View view) {

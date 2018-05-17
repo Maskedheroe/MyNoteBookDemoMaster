@@ -54,7 +54,7 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
         viewHolder.content.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (Flags.currentAccount != 1){
+                if (Flags.CURRENT_STATUS != 1){
                     Toast.makeText(parent.getContext(),"只有管理身份才可操作！",Toast.LENGTH_SHORT).show();
                     return true;
                 }else {
@@ -96,7 +96,7 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
                         viewHolder.url.getText().toString() ,
                         Flags.currentAccount);
                 if (collectionBean.save()){
-                    if (Flags.USER!=null){
+                    if (Flags.USER!=null&&Flags.currentAccount!=-1){
                         Flags.USER.getCollectionBeans().add(collectionBean);
                         Flags.USER.saveOrUpdate("id = ?",Flags.USER.getId()+"");
                         Toast.makeText(parent.getContext(),"收藏成功！",Toast.LENGTH_SHORT).show();

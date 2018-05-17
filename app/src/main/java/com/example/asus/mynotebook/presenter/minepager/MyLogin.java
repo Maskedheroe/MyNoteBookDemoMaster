@@ -40,6 +40,7 @@ public class MyLogin {
     private LinearLayout update_icon;
     private ImageButton dismissLogin;
     private LinearLayout loginExit;
+    private View dealuser;
 
     public MyLogin(View view) {
         this.view = view;
@@ -104,7 +105,7 @@ public class MyLogin {
                             Toast.makeText(mactivity, "注册成功", Toast.LENGTH_SHORT).show();
                             Flags.USER = userBean;
                             if (Flags.currentAccount != -1) {
-                                Toast.makeText(mactivity, "现在已登录" + userBean.getUserName() + "账号", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mactivity, "现在已登录！" + userBean.getUserName() + "账号", Toast.LENGTH_SHORT).show();
                             }
                             loginsuccess(userBean, mactivity);
                         } else {
@@ -149,6 +150,8 @@ public class MyLogin {
         manager_login.setAlpha(1);
         loginExit.setClickable(true);
         loginExit.setAlpha(1);
+        dealuser.setClickable(true);
+        dealuser.setAlpha(1);
     }
 
     private void disMissButton() {
@@ -162,6 +165,8 @@ public class MyLogin {
         manager_login.setAlpha((float) 0.2);
         loginExit.setClickable(false);
         loginExit.setAlpha((float) 0.2);
+        dealuser.setClickable(false);
+        dealuser.setAlpha((float) 0.2);
     }
 
     public void loginsuccess(UserBean userBean, Activity mactivity) {
@@ -200,6 +205,7 @@ public class MyLogin {
                         loginsuccess(userBean,mactivity);
                         Toast.makeText(mactivity,"管理员登陆",Toast.LENGTH_SHORT).show();
                         Flags.CURRENT_STATUS = 1;
+                        Flags.currentAccount = 1;
                     }else {
                         Toast.makeText(mactivity, "登录失败，用户名或密码错误", Toast.LENGTH_SHORT).show();
                         loginPass.getEditText().setText("");
@@ -223,6 +229,7 @@ public class MyLogin {
                             Toast.makeText(mactivity, "注册成功", Toast.LENGTH_SHORT).show();
                             Toast.makeText(mactivity, "管理员登录", Toast.LENGTH_SHORT).show();
                             Flags.CURRENT_STATUS = 1;
+                            Flags.currentAccount = 1;
                         }else {
                             Toast.makeText(mactivity,"注册失败",Toast.LENGTH_SHORT).show();
 
@@ -244,5 +251,6 @@ public class MyLogin {
         update_icon = view.findViewById(R.id.login_updateicon);
         dismissLogin = view.findViewById(R.id.ib_dismisslogin);
         loginExit = view.findViewById(R.id.login_exit);
+        dealuser = view.findViewById(R.id.login_dealuser);
     }
 }

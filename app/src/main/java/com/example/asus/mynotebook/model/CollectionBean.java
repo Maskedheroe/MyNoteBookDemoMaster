@@ -21,8 +21,8 @@ public class CollectionBean extends DataSupport {
     private String date;
     private final String course;
     private final int userId;
-    private  String contentMap;
-    private  ImageView imageView;
+    private String contentMap;
+    private ImageView imageView;
     private boolean isImageView;
 
     public CollectionBean(String title, String course, ImageView imageView, int i, boolean b) {

@@ -12,6 +12,7 @@ import com.example.asus.mynotebook.R;
 import com.example.asus.mynotebook.flags.Flags;
 import com.example.asus.mynotebook.model.NoteBean;
 import com.example.asus.mynotebook.model.UserBean;
+import com.example.asus.mynotebook.presenter.minepager.DetailsAdapterWithUser;
 import com.example.asus.mynotebook.presenter.notepager.DetailsAdapter;
 import com.example.asus.mynotebook.presenter.notepager.MynotesAdapter;
 
@@ -24,6 +25,7 @@ public class NoteDetails extends AppCompatActivity {
 
     private RecyclerView rv_detail;
     private FragmentManager supportFragmentManager;
+    private String key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +33,25 @@ public class NoteDetails extends AppCompatActivity {
         setContentView(R.layout.activity_note_details);
         rv_detail = findViewById(R.id.rv_mynotes_detail);
         supportFragmentManager = getSupportFragmentManager();
-        initRecycler();
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null){
+            key = extras.getString("key");
+            initRecyclerWithUser();
+        }else {
+            initRecycler();
+        }
+
     }
 
     private void initRecycler() {
         List<NoteBean> note = DataSupport.where("userId = ?", String.valueOf(Flags.currentAccount)).find(NoteBean.class);  //查不到
         rv_detail.setLayoutManager(new LinearLayoutManager(this));
         rv_detail.setAdapter(new DetailsAdapter(note, this,supportFragmentManager));
+
+    } private void initRecyclerWithUser() {
+        List<UserBean> user = UserBean.findAll(UserBean.class);  //查不到
+        rv_detail.setLayoutManager(new LinearLayoutManager(this));
+        rv_detail.setAdapter(new DetailsAdapterWithUser(user, this,supportFragmentManager));
 
     }
 }

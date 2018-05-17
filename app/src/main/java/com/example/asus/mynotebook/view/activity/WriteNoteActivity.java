@@ -51,7 +51,12 @@ public class WriteNoteActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_note);
         initView();
-        key = getIntent().getExtras().getString("key");
+        Bundle extras = getIntent().getExtras();
+        if (extras!=null){
+            key = extras.getString("key");
+        }else {
+            key = "user";
+        }
     }
 
     private void initView() {

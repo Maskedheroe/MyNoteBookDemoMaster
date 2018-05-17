@@ -32,7 +32,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="我的错题"
+                android:text="我的错题库"
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -50,7 +50,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="做笔记"
+                android:text="记录错题"
                 android:gravity="center"
                 />
         </LinearLayout>
