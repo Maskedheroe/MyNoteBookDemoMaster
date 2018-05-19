@@ -196,7 +196,7 @@ public class MyLogin {
                 List<UserBean> userBeans = DataSupport.where("userName = ?", loginUser.getEditText().getText().toString()).find(UserBean.class);
                 if (userBeans.size()>0) {
                     UserBean userBean = userBeans.get(0);
-                    if (userBean.getUserPwd().equals(loginPass.getEditText().getText().toString())) { //litePal的查找逻辑
+                    if (userBean.getUserPwd().equals(loginPass.getEditText().getText().toString())&&userBean.getUserName().equals("admin")) { //litePal的查找逻辑
                         if (userBean.getId()==Flags.currentAccount){
                             Toast.makeText(mactivity, "已经登录，不可重复登陆", Toast.LENGTH_SHORT).show();  //判断重复登录的逻辑
                             ml_login.setVisibility(View.INVISIBLE);
@@ -206,6 +206,7 @@ public class MyLogin {
                         Toast.makeText(mactivity,"管理员登陆",Toast.LENGTH_SHORT).show();
                         Flags.CURRENT_STATUS = 1;
                         Flags.currentAccount = 1;
+                        Flags.USER = userBean;
                     }else {
                         Toast.makeText(mactivity, "登录失败，用户名或密码错误", Toast.LENGTH_SHORT).show();
                         loginPass.getEditText().setText("");
@@ -220,16 +221,22 @@ public class MyLogin {
             @Override
             public void onRegister(TextInputLayout registerUser, TextInputLayout registerPass, TextInputLayout registerPassRep) {
                 //Handle register 处理注册的事务
-                UserBean userBean = new UserBean(registerUser.getEditText().getText().toString(),
-                        registerPassRep.getEditText().getText().toString());
+                String userName = registerUser.getEditText().getText().toString();
+                String userPwd = registerPassRep.getEditText().getText().toString();
+                UserBean userBean = new UserBean(userName,userPwd);
 
                     if (DataSupport.where("userName == ?", userBean.getUserName())
-                            .find(UserBean.class).isEmpty()) {  //判断用户名是否存在
+                            .find(UserBean.class).isEmpty()) {  //判断注册管理员是否合法
+                        if (!userName.equals("admin")&&!userPwd.equals("123")){
+                            Toast.makeText(mactivity,"注册失败，非合法注册的管理员",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         if (userBean.save()) {//判断注册成功
                             Toast.makeText(mactivity, "注册成功", Toast.LENGTH_SHORT).show();
                             Toast.makeText(mactivity, "管理员登录", Toast.LENGTH_SHORT).show();
                             Flags.CURRENT_STATUS = 1;
                             Flags.currentAccount = 1;
+                            Flags.USER = userBean;
                         }else {
                             Toast.makeText(mactivity,"注册失败",Toast.LENGTH_SHORT).show();
 

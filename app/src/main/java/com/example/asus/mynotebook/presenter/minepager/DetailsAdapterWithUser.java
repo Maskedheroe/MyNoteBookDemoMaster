@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.asus.mynotebook.R;
+import com.example.asus.mynotebook.model.CollectionBean;
 import com.example.asus.mynotebook.model.NoteBean;
 import com.example.asus.mynotebook.model.UserBean;
 
@@ -73,6 +74,9 @@ public class DetailsAdapterWithUser extends RecyclerView.Adapter<DetailsAdapterW
         inflate = View.inflate(parent.getContext(), R.layout.users_list, null);
         final ViewHolder viewHolder = new ViewHolder(inflate);
         viewHolder.rlUsers.setOnLongClickListener(new View.OnLongClickListener() {
+
+            private String str_id;
+
             @Override
             public boolean onLongClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -87,7 +91,10 @@ public class DetailsAdapterWithUser extends RecyclerView.Adapter<DetailsAdapterW
                             //业务逻辑
                             case "删除":
                                 deleteAnim(viewHolder);
-                                DataSupport.deleteAll(UserBean.class, "id = ?", viewHolder.tvUlUserAccountID.getText().toString());
+                                str_id = viewHolder.tvUlUserAccountID.getText().toString();
+                                DataSupport.deleteAll(UserBean.class, "id = ?", str_id);
+                                DataSupport.deleteAll(NoteBean.class,"userId = ?", str_id);
+                                DataSupport.deleteAll(CollectionBean.class,"userId = ?", str_id);
                                 break;
                             default:
                                 //        Toast.makeText(mcontext,"功能未开放",Toast.LENGTH_SHORT).show();
