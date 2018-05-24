@@ -74,11 +74,11 @@ public class MyLogin {
                     UserBean userBean = userBeans.get(0);
                     if (userBean.getUserPwd().equals(loginPass.getEditText().getText().toString())) { //litePal的查找逻辑
                         if (userBean.getId()== Flags.currentAccount){
-                            Toast.makeText(mactivity, "已经登录，不可重复登陆", Toast.LENGTH_SHORT).show();  //判断重复登录的逻辑
+                            Toast.makeText(mactivity, "已经登录，不可重复登录", Toast.LENGTH_SHORT).show();  //判断重复登录的逻辑
                             ml_login.setVisibility(View.INVISIBLE);
                             return;
                         }
-                        loginsuccess(userBean, mactivity);
+                        loginsuccess(userBean, mactivity, loginUser, loginPass);
                     }else {
                         Toast.makeText(mactivity, "登录失败，用户名或密码错误", Toast.LENGTH_SHORT).show();
                         loginPass.getEditText().setText("");
@@ -92,11 +92,12 @@ public class MyLogin {
         ((DefaultRegisterView)ml_login.getRegisterView()).setListener(new DefaultRegisterView.DefaultRegisterViewListener() {
             @Override
             public void onRegister(TextInputLayout registerUser, TextInputLayout registerPass, TextInputLayout registerPassRep) {
-                Toast.makeText(mactivity, "账户名和密码必须大于6位", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(mactivity, "账户名和密码必须大于6位", Toast.LENGTH_SHORT).show();
                 String accountName = Objects.requireNonNull(registerUser.getEditText()).getText().toString();
                 String accountPwd = Objects.requireNonNull(registerPassRep.getEditText()).getText().toString();
                 if (accountName.length() > 6 && accountPwd.length() > 6) {
                     //Handle register 处理注册的事务
+
                     UserBean userBean = new UserBean(accountName, accountPwd);
                     List<UserBean> userBeans = DataSupport.where("userName == ?", accountName)  //存储至数据库
                             .find(UserBean.class);
@@ -107,7 +108,7 @@ public class MyLogin {
                             if (Flags.currentAccount != -1) {
                                 Toast.makeText(mactivity, "现在已登录！" + userBean.getUserName() + "账号", Toast.LENGTH_SHORT).show();
                             }
-                            loginsuccess(userBean, mactivity);
+                            loginsuccess(userBean, mactivity, registerUser, registerPass);
                         } else {
                             Toast.makeText(mactivity, "注册失败", Toast.LENGTH_SHORT).show();
                         }
@@ -169,10 +170,12 @@ public class MyLogin {
         dealuser.setAlpha((float) 0.2);
     }
 
-    public void loginsuccess(UserBean userBean, Activity mactivity) {
-        Toast.makeText(mactivity, "登陆成功", Toast.LENGTH_SHORT).show();  //成功之后的逻辑
+    public void loginsuccess(UserBean userBean, Activity mactivity, TextInputLayout loginUser, TextInputLayout loginPass) {
+        Toast.makeText(mactivity, "登录成功", Toast.LENGTH_SHORT).show();  //成功之后的逻辑
+        Objects.requireNonNull(loginUser.getEditText()).setText("");
+        Objects.requireNonNull(loginPass.getEditText()).setText("");
         if (ml_login!=null){
-            ml_login.setVisibility(View.INVISIBLE); //成功后隐藏登陆窗
+            ml_login.setVisibility(View.INVISIBLE); //成功后隐藏登录窗
         }
         Flags.USER = userBean;
         Flags.currentAccount = userBean.getId();
@@ -198,12 +201,13 @@ public class MyLogin {
                     UserBean userBean = userBeans.get(0);
                     if (userBean.getUserPwd().equals(loginPass.getEditText().getText().toString())&&userBean.getUserName().equals("admin")) { //litePal的查找逻辑
                         if (userBean.getId()==Flags.currentAccount){
-                            Toast.makeText(mactivity, "已经登录，不可重复登陆", Toast.LENGTH_SHORT).show();  //判断重复登录的逻辑
+                            Toast.makeText(mactivity, "已经登录，不可重复登录", Toast.LENGTH_SHORT).show();  //判断重复登录的逻辑
                             ml_login.setVisibility(View.INVISIBLE);
                             return;
                         }
-                        loginsuccess(userBean,mactivity);
-                        Toast.makeText(mactivity,"管理员登陆",Toast.LENGTH_SHORT).show();
+
+                        loginsuccess(userBean,mactivity,loginUser,loginPass);
+                        Toast.makeText(mactivity,"管理员登录",Toast.LENGTH_SHORT).show();
                         Flags.CURRENT_STATUS = 1;
                         Flags.currentAccount = 1;
                         Flags.USER = userBean;
@@ -237,6 +241,9 @@ public class MyLogin {
                             Flags.CURRENT_STATUS = 1;
                             Flags.currentAccount = 1;
                             Flags.USER = userBean;
+                            accountName.append(userName);
+                            registerPassRep.getEditText().setText("");
+                            loginsuccess(userBean,mactivity, registerUser, registerPass);
                         }else {
                             Toast.makeText(mactivity,"注册失败",Toast.LENGTH_SHORT).show();
 

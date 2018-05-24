@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +12,11 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.example.asus.mynotebook.R;
+import com.example.asus.mynotebook.model.CollectionBean;
+import com.example.asus.mynotebook.utils.InitDataBase;
 import com.example.asus.mynotebook.view.interfaces.ContentFragement;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     //主活动 管理主页面 连接ContentFragment
@@ -35,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit(); //提交事务!!
 
 
+        InitDataBase.initDataBase(this);
     }
+
+
 
 
     public void onShow() {

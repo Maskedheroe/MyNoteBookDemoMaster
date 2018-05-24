@@ -16,17 +16,10 @@
         android:background="@drawable/math"
         app:tabMode="scrollable"
         app:tabGravity="fill"
+        android:scrollIndicators="none"
+        android:visibility="invisible"
         >
     </android.support.design.widget.TabLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vp_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
-        >
-
-    </android.support.v4.view.ViewPager>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_manager"
@@ -39,5 +32,14 @@
         android:backgroundTint="@null"
         app:elevation="10dp"
         android:src="@drawable/managaer_add" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+    </android.support.v4.view.ViewPager>
 
 </RelativeLayout>

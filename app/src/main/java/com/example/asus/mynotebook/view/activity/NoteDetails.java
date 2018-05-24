@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.example.asus.mynotebook.R;
 import com.example.asus.mynotebook.flags.Flags;
 import com.example.asus.mynotebook.model.NoteBean;
@@ -44,14 +45,19 @@ public class NoteDetails extends AppCompatActivity {
     }
 
     private void initRecycler() {
+
         List<NoteBean> note = DataSupport.where("userId = ?", String.valueOf(Flags.currentAccount)).find(NoteBean.class);  //查不到
         rv_detail.setLayoutManager(new LinearLayoutManager(this));
         rv_detail.setAdapter(new DetailsAdapter(note, this,supportFragmentManager));
 
-    } private void initRecyclerWithUser() {
+    }
+    private void initRecyclerWithUser() {
         List<UserBean> user = UserBean.findAll(UserBean.class);  //查不到
         rv_detail.setLayoutManager(new LinearLayoutManager(this));
-        rv_detail.setAdapter(new DetailsAdapterWithUser(user, this,supportFragmentManager));
+        DetailsAdapterWithUser detailsAdapterWithUser = new DetailsAdapterWithUser(user, this, supportFragmentManager);
+
+        rv_detail.setAdapter(detailsAdapterWithUser);
+        detailsAdapterWithUser.notifyDataSetChanged();
 
     }
 }

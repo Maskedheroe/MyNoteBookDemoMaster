@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.example.asus.mynotebook.R;
 import com.example.asus.mynotebook.model.CollectionBean;
 import com.example.asus.mynotebook.model.NoteBean;
@@ -43,7 +44,7 @@ public class NoteOnLongClickListener implements View.OnLongClickListener {
     private void showDialog(final String str_title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mcontext);
         builder.setTitle("操作");
-        final String[] items = {"分组", "详情","删除"};
+        final String[] items = {"删除"};
         builder.setNegativeButton("取消", null);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
@@ -54,10 +55,9 @@ public class NoteOnLongClickListener implements View.OnLongClickListener {
                     case "删除":
                         deleteAnim();
                         DataSupport.deleteAll(CollectionBean.class,"title = ?" , str_title);
+                        //题目和id删除
                         break;
                     default:
-                        //        Toast.makeText(mcontext,"功能未开放",Toast.LENGTH_SHORT).show();
-                        //如何刷新呢?
                         break;
                 }
             }

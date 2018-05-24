@@ -29,16 +29,80 @@ public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         return fragmentList.size();
+//        return 10;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
         return str_title.get(position);
+
+        /*switch (position){
+            case 1:
+                return "数学";
+
+            case 2:
+                return "语文";
+
+            case 3:
+                return "英语";
+
+            case 4:
+                return "物理";
+
+            case 5:
+                return "化学";
+
+            case 6:
+                return "生物";
+
+            case 7:
+                return "历史";
+
+            case 8:
+                return "地理";
+
+            case 9:
+                return "政治";
+
+            default:
+                return "数学";
+        }*/
     }
 
     @Override
     public Fragment getItem(int position) {
         return fragmentList.get(position);
+        /*switch (position){
+            case 1:
+            return new BlankFragment("数学");
+
+            case 2:
+            return new BlankFragment("语文");
+
+            case 3:
+            return new BlankFragment("英语");
+
+            case 4:
+            return new BlankFragment("物理");
+
+            case 5:
+            return new BlankFragment("化学");
+
+            case 6:
+            return new BlankFragment("生物");
+
+            case 7:
+            return new BlankFragment("历史");
+
+            case 8:
+            return new BlankFragment("地理");
+
+            case 9:
+            return new BlankFragment("政治");
+
+            default:
+                return new BlankFragment("数学");
+        }*/
     }
 
     @Override

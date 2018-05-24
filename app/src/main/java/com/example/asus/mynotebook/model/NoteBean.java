@@ -16,6 +16,7 @@ import java.util.Calendar;
  */
 
 public class NoteBean extends DataSupport {
+
     private Calendar mdate;
     private int id;
     private String title;

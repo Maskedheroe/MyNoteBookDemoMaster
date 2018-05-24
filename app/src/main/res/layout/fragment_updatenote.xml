@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="310dp">
 
+    <ImageView
+        android:id="@+id/iv_imagecontent"
+        android:layout_width="166dp"
+        android:layout_height="132dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="63dp" />
+
 
     <EditText
         android:id="@+id/et_updateNote_content"

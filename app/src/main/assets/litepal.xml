@@ -5,13 +5,57 @@
     <version value="6" ></version>
 
     <list>
-        <mapping class="com.example.asus.mynotebook.model.NoteBean"></mapping>
-        <mapping class="com.example.asus.mynotebook.model.SubjectBean"></mapping>
-        <mapping class="com.example.asus.mynotebook.model.UserBean"></mapping>
-        <mapping class="com.example.asus.mynotebook.model.CollectionBean"></mapping>
+        <mapping class="com.example.asus.mynotebook.model.NoteBean" />
+
+        <mapping class="com.example.asus.mynotebook.model.SubjectBean" />
+
+        <mapping class="com.example.asus.mynotebook.model.UserBean" />
+
+        <mapping class="com.example.asus.mynotebook.model.CollectionBean" />
     </list>
+
+  <!--四张表单-->
+</litepal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!--数据库四张表单-->
     <!--其中Notebean和UserBean是多对一的关系-->
     <!--   CollectionBean和UserBean是多对多的关系-->
 
-</litepal>
+    <!--User表的collectionId 是外码 通过搜索外码查询到用户都收藏了那些题目-->

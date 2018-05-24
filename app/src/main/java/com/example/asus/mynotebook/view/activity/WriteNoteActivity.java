@@ -1,7 +1,20 @@
 package com.example.asus.mynotebook.view.activity;
 
+import android.Manifest;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Handler;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +36,7 @@ import com.example.asus.mynotebook.model.UserBean;
 import com.example.asus.mynotebook.presenter.mainpager.BlankFragment;
 import com.example.asus.mynotebook.presenter.notepager.AddPhotos;
 import com.example.asus.mynotebook.presenter.notepager.GridAdapter;
+import com.example.asus.mynotebook.utils.GlideImageLoader;
 import com.example.asus.mynotebook.utils.SpinnerUtil;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.lzy.imagepicker.ImagePicker;
@@ -31,6 +45,7 @@ import com.lzy.imagepicker.bean.ImageItem;
 import org.litepal.crud.DataSupport;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class WriteNoteActivity extends AppCompatActivity implements View.OnClickListener {
@@ -45,11 +60,96 @@ public class WriteNoteActivity extends AppCompatActivity implements View.OnClick
     private String currentCourse;
     private ImageView iv_note;
     private String key;
+    private Uri imageUri;
+
+    private String mImagePath;
+
+
+    private static final int CHOOSE_PHOTO = 2;
+
+    private void setPhoto(){
+        Intent intent = new Intent("android.intent.action.GET_CONTENT");
+        intent.setType("image/*");
+        startActivityForResult(intent,CHOOSE_PHOTO);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+         switch (requestCode){
+            case 1:
+                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    setPhoto();
+                }else {
+                    Toast.makeText(this,"你拒绝了该权限",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode){
+            case -1:
+                handle(data);
+            default:
+                break;
+        }
+    }
+
+    private void handle(Intent data) {
+        String imagePath = null;
+        Uri uri = data.getData();
+        if (DocumentsContract.isDocumentUri(this,uri)){
+            String docId = DocumentsContract.getDocumentId(uri);
+            assert uri != null;
+            if ("com.android.providers.media.documents".equals(uri.getAuthority())){
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" + id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,selection);
+            }else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())){
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),Long.valueOf(docId));
+                imagePath = getImagePath(contentUri,null);
+            }
+        }else if ("content".equalsIgnoreCase(uri.getScheme())){
+            imagePath = getImagePath(uri,null);
+        }else if ("file".equalsIgnoreCase(uri.getScheme())){
+            imagePath = uri.getPath();
+        }
+        dispalyImage(imagePath);
+    }
+
+    private void dispalyImage(String imagePath) {
+        if (imagePath!=null){
+            mImagePath = imagePath;
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            GlideImageLoader.glideLoaderByURL(this,imagePath,iv_note);
+            iv_note.setImageBitmap(bitmap);
+            Toast.makeText(this,"记录成功",Toast.LENGTH_SHORT).show();
+            new NoteBean(writetitle.getText().toString(),currentCourse,"",Flags.currentAccount,imagePath+"").save();
+        }else {
+            Toast.makeText(this,"获得图片失败！",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getImagePath(Uri uri, String selection) {
+        String path = null;
+        Cursor cursor = getContentResolver().query(uri,null,selection,null,null);
+        if (cursor!=null){
+            if (cursor.moveToFirst()){
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return path;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_note);
+
         initView();
         Bundle extras = getIntent().getExtras();
         if (extras!=null){
@@ -76,8 +176,17 @@ public class WriteNoteActivity extends AppCompatActivity implements View.OnClick
         addPhotos.setOnClickListener(this);
         deleteContent.setOnClickListener(this);
         commit.setOnClickListener(this);
-        currentCourse = SpinnerUtil.initSpinner(spinner);
+        spinner.setItems("无", "数学", "语文", "英语", "物理", "化学", "生物", "历史", "地理", "政治");
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+                currentCourse = spinner.getItems().get(position).toString();
+
+            }
+        });
+
     }
+
 
 
     @Override
@@ -88,25 +197,9 @@ public class WriteNoteActivity extends AppCompatActivity implements View.OnClick
             case R.id.et_writetext:
                 break;
             case R.id.ib_addphotos:
-                Intent intent = new Intent(this, UpdateIcon.class);
-                startActivity(intent);
-                Bundle extras = this.getIntent().getExtras();
-                if (extras != null && !writetitle.getText().toString().equals("")) {  //选择图片后也要检验是否有标题
-                    String icon = extras.getString("icon");
-                    Glide.with(this).load(Uri.fromFile(new File(icon))).into(iv_note);
-                    NoteBean noteBean = new NoteBean(writetitle.getText().toString(), currentCourse, writetext.getText().toString(), Flags.currentAccount, icon); //存储方法
-                    if (noteBean.save()) {
-                        if (Flags.CURRENT_STATUS == 1 && key.equals("manager"));{
-                            ArrayList<CollectionBean> data = BlankFragment.getData(currentCourse);
-                            if (data!=null){
-                                data.add(new CollectionBean(writetitle.getText().toString(),currentCourse,iv_note,-1,true));
-                            }
-                        }
-                        new SVProgressHUD(this).showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                        //执行数据存储逻辑
-                    } else {
-                        new SVProgressHUD(this).showErrorWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
+                if (!writetitle.getText().toString().equals("")) {  //选择图片后也要检验是否有标题
+                    checkPermissions();
+
                 } else {
                     showNotitle();
                 }
@@ -120,29 +213,77 @@ public class WriteNoteActivity extends AppCompatActivity implements View.OnClick
                 }
                 break;
             case R.id.ib_commit:
-                if (writetitle.getText().toString().equals("")) {
-                    showNotitle();
-                } else if (!DataSupport.where("title = ?", writetitle.getText().toString()).find(NoteBean.class).isEmpty()) { //此处是判断错题本重名的逻
-                    if (DataSupport.where("title = ?", writetitle.getText().toString()).find(NoteBean.class).get(0).getUser() != null) {
-                        if (!DataSupport.where("title = ?", writetitle.getText().toString()).find(NoteBean.class).isEmpty() &&
-                                DataSupport.where("title = ?", writetitle.getText().toString()).find(NoteBean.class).get(0).getUser().getId() == Flags.currentAccount)
-                            new SVProgressHUD(this).showInfoWithStatus("已存在该收藏", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
-                } else if (currentCourse == null) {
-                    new SVProgressHUD(this).showErrorWithStatus("没有选择课程", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    return;
-                } else {
-                    NoteBean noteBean = new NoteBean(writetitle.getText().toString(),  currentCourse,writetext.getText().toString(), Flags.currentAccount); //存储方法
-                    if (noteBean.save()) {
-                        new SVProgressHUD(this).showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                        //执行数据存储逻辑
-                    } else {
-                        new SVProgressHUD(this).showErrorWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
-                    }
 
+               if (key.equals("manager")){
+//                    CollectionBean collectionBean = new CollectionBean(writetitle.getText().toString(),currentCourse,writetext.getText().toString(),Flags.CURRENT_STATUS);
+                   /* BlankFragment.getData(writetitle.getText().toString()).add(new CollectionBean(writetitle.getText().toString(),
+                            currentCourse,writetext.getText().toString(),Flags.CURRENT_STATUS));*/
+
+                   if (mImagePath!=null){
+                       CollectionBean collectionBean = new CollectionBean(writetitle.getText().toString(),currentCourse,mImagePath,1,true);
+                       collectionSave(collectionBean);
+                   }else {
+                       CollectionBean collectionBean = new CollectionBean(writetitle.getText().toString(),currentCourse,writetext.getText().toString(),1,false);
+                       collectionSave(collectionBean);
+                   }
                 }
-                break;
+                commit();
 
+        }
+    }
+
+
+    private void commit() {
+
+        if (writetitle.getText().toString().equals("")) {
+            showNotitle();
+        } else if (!DataSupport.where("title = ?", writetitle.getText().toString()).find(NoteBean.class).isEmpty()) { //此处是判断错题本重名的逻
+            if (DataSupport.where("title = ?", writetitle.getText().toString()).find(NoteBean.class).get(0).getUser() != null) {
+                if (!DataSupport.where("title = ?", writetitle.getText().toString()).find(NoteBean.class).isEmpty() &&
+                        DataSupport.where("title = ?", writetitle.getText().toString()).find(NoteBean.class).get(0).getUser().getId() == Flags.currentAccount)
+                    new SVProgressHUD(this).showInfoWithStatus("已存在该收藏", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            }
+        } else if (currentCourse == null) {
+            new SVProgressHUD(this).showErrorWithStatus("没有选择课程", SVProgressHUD.SVProgressHUDMaskType.Clear);
+
+        } else {
+            if (mImagePath == null) {
+                NoteBean noteBean = new NoteBean(writetitle.getText().toString(), currentCourse, writetext.getText().toString(), Flags.currentAccount); //存储方法
+                datasave(noteBean);
+            }else {
+                NoteBean noteBean = new NoteBean(writetitle.getText().toString(), currentCourse, writetext.getText().toString(), Flags.currentAccount, mImagePath); //存储方法
+                datasave(noteBean);
+            }
+
+        }
+    }
+
+    private void collectionSave(CollectionBean noteBean) {
+        if (noteBean.save()) {
+            new SVProgressHUD(this).showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            startActivity(new Intent(this,MainActivity.class));
+            //执行数据存储逻辑
+        } else {
+            new SVProgressHUD(this).showErrorWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        }
+    }
+
+    private void datasave(NoteBean noteBean) {
+        if (noteBean.save()) {
+            new SVProgressHUD(this).showSuccessWithStatus("保存成功", SVProgressHUD.SVProgressHUDMaskType.Clear);
+            //执行数据存储逻辑
+        } else {
+            new SVProgressHUD(this).showErrorWithStatus("保存失败", SVProgressHUD.SVProgressHUDMaskType.Clear);
+        }
+    }
+
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE} ,1);
+
+        }else {
+            setPhoto();
         }
     }
 

@@ -15,6 +15,7 @@ import java.util.Calendar;
  */
 
 public class CollectionBean extends DataSupport {
+
     private Calendar mdate;
     private int id;
     private String title;
@@ -22,13 +23,28 @@ public class CollectionBean extends DataSupport {
     private final String course;
     private final int userId;
     private String contentMap;
+    private String content;
     private ImageView imageView;
     private boolean isImageView;
 
-    public CollectionBean(String title, String course, ImageView imageView, int i, boolean b) {
+
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public CollectionBean(String title, String course, String imageView, int i, boolean b) {
         this.title = title;
         this.course = course;
-        this.imageView = imageView;
+        if (b) {
+            this.contentMap = imageView;
+        }else {
+            content = imageView;
+        }
         this.userId = i;
         isImageView = b;
     }
@@ -86,7 +102,7 @@ public class CollectionBean extends DataSupport {
     public CollectionBean(String title, String course, String contentMap, int id) {
             this.title = title;
             this.course = course;
-            this.contentMap = contentMap;
+            this.content = contentMap;
             this.userId = id;
     }
 

@@ -68,7 +68,7 @@ public class MynotesAdapter extends RecyclerView.Adapter<MynotesAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         CollectionBean noteBean  = noteLists.get(position);
-        com.example.asus.mynotebook.utils.GlideImageLoader.glideLoaderByURL(context,noteBean.getContentMap(),holder.imageContent);
+        com.example.asus.mynotebook.utils.GlideImageLoader.glideLoaderByURL(context,noteBean.getContent(),holder.imageContent);
         holder.course.setText(noteBean.getCourse());
         holder.date.setText(noteBean.getDate());
         holder.title.setText(noteBean.getTitle());

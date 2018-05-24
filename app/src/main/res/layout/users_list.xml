@@ -4,46 +4,42 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<RelativeLayout
-    android:id="@+id/rl_users"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"><TextView
-        android:id="@+id/tv_ulUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+    <RelativeLayout
+        android:id="@+id/rl_users"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="23dp"
-        android:text="用户名:" />
+        android:layout_alignParentTop="true">
 
-    <TextView
-        android:id="@+id/tv_ulUserAccountID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/tv_ulUserName"
-        android:layout_marginTop="55dp"
-        android:text="id:" />
+        <TextView
+            android:id="@+id/tv_ulUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="23dp"
+            android:text="用户名:" />
 
-    <TextView
-        android:id="@+id/tv_ulUserAccountPWD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tv_ulUserAccountCollects"
-        android:layout_alignTop="@+id/tv_ulUserAccountID"
-        android:text="密码:" />
+        <TextView
+            android:id="@+id/tv_ulUserAccountID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/tv_ulUserName"
+            android:layout_marginTop="55dp"
+            android:text="id:" />
 
-    <TextView
-        android:id="@+id/tv_ulUserAccountCollects"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/tv_ulUserName"
-        android:layout_marginEnd="105dp"
-        android:text="收藏数:" />
+        <TextView
+            android:id="@+id/tv_ulUserAccountPWD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_ulUserAccountID"
+            android:paddingStart="150dp"
+            android:text="密码:" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

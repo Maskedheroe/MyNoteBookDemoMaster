@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.example.asus.mynotebook.R;
 import com.example.asus.mynotebook.model.CollectionBean;
 import com.example.asus.mynotebook.model.NoteBean;
+import com.example.asus.mynotebook.utils.GlideImageLoader;
 
 import org.litepal.crud.DataSupport;
 
@@ -74,7 +75,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
             public boolean onLongClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("操作");
-                final String[] items = {"分组", "修改","删除"};
+                final String[] items = {"修改","删除"};
                 builder.setNegativeButton("取消", null);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
@@ -115,6 +116,7 @@ public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHold
         holder.course.setText(noteBean.getCourse());
         holder.date.setText(noteBean.getDate());
         holder.title.setText(noteBean.getTitle());
+        GlideImageLoader.glideLoaderByURL(context,noteBean.getContentMap(),holder.imageContent);
     }
 
 

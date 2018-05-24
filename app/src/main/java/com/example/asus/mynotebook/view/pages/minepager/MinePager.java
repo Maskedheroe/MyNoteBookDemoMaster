@@ -76,7 +76,9 @@ public class MinePager extends BasePager {
             @Override
             public void onClick(View v) {
                 if (Flags.currentAccount == -1) {
-                    Toast.makeText(mactivity, "未登录！", Toast.LENGTH_SHORT).show();
+
+                    new SVProgressHUD(mactivity).showErrorWithStatus("未登录!", SVProgressHUD.SVProgressHUDMaskType.Clear);
+
                 } else {
 
                     UpdatePwd.showDialog(mactivity, mFragmentManager);
@@ -104,7 +106,7 @@ public class MinePager extends BasePager {
                 if (Flags.currentAccount != -1) {
                     mactivity.startActivity(new Intent(mactivity, UpdateIcon.class));
                 } else {
-                    new SVProgressHUD(mactivity).showErrorWithStatus("未登录，请先登陆", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                    new SVProgressHUD(mactivity).showErrorWithStatus("未登录，请先登录", SVProgressHUD.SVProgressHUDMaskType.Clear);
                 }
             }
         });

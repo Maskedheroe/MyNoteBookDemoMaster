@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.asus.mynotebook.R;
@@ -60,7 +61,7 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
                 }else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("操作");
-                    final String[] items = {"分组", "详情","删除"};
+                    final String[] items = {"详情","删除"};
                     builder.setNegativeButton("取消", null);
                     builder.setItems(items, new DialogInterface.OnClickListener() {
                         @Override
@@ -69,8 +70,12 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
                             switch (items[which]) {
                                 //业务逻辑
                                 case "删除":
+                                    //删除管理
                                     deleteAnim(inflate,viewHolder);
                                     DataSupport.deleteAll(CollectionBean.class,"title = ?" , viewHolder.title.getText().toString());
+                                    break;
+                                case "详情":
+                                    new SVProgressHUD(context).showInfoWithStatus("管理员Admin 4.5日 上传", SVProgressHUD.SVProgressHUDMaskType.Clear);
                                     break;
                                 default:
                                     //        Toast.makeText(mcontext,"功能未开放",Toast.LENGTH_SHORT).show();
@@ -85,7 +90,42 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
             }
         });
 
+        viewHolder.title.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (Flags.CURRENT_STATUS != 1){
+                    Toast.makeText(parent.getContext(),"只有管理身份才可操作！",Toast.LENGTH_SHORT).show();
+                    return true;
+                }else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("操作");
+                    final String[] items = {"详情","删除"};
+                    builder.setNegativeButton("取消", null);
+                    builder.setItems(items, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
+                            switch (items[which]) {
+                                //业务逻辑
+                                case "删除":
+                                    deleteAnim(inflate,viewHolder);
+                                    DataSupport.deleteAll(CollectionBean.class,"title = ?" , viewHolder.title.getText().toString());
+                                    break;
+                                case "详情":
+                                    new SVProgressHUD(context).showInfoWithStatus("管理员Admin 4.5日 上传", SVProgressHUD.SVProgressHUDMaskType.Clear);
+                                    break;
+                                default:
+                                    //        Toast.makeText(mcontext,"功能未开放",Toast.LENGTH_SHORT).show();
+                                    //如何刷新呢?
+                                    break;
+                            }
+                        }
+                    });
+                    builder.show();
+                }
+                return true;
+            }
+        });
 
         viewHolder.collection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +139,10 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
                     if (Flags.USER!=null&&Flags.currentAccount!=-1){
                         Flags.USER.getCollectionBeans().add(collectionBean);
                         Flags.USER.saveOrUpdate("id = ?",Flags.USER.getId()+"");
+                        if (Flags.CURRENT_STATUS == 1){
+                            Toast.makeText(parent.getContext(),"管理员无需收藏！",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         Toast.makeText(parent.getContext(),"收藏成功！",Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(parent.getContext(),"收藏失败！请先登陆！",Toast.LENGTH_SHORT).show();
@@ -116,14 +160,24 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
     public void onBindViewHolder(ViewHolder holder, int position) {
         CollectionBean noteBean  = noteLists.get(position);
         RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.orange);
-        Glide.with(context)
-                .load(noteBean.getContentMap())
-                .apply(requestOptions)
-                .into( holder.content);  //Glide用加载二进制流来加载图片
+
+        if (noteBean.getContentMap()!=null) {
+            Glide.with(context)
+                    .load(noteBean.getContentMap())
+                    .apply(requestOptions)
+                    .into(holder.content);
+        }//Glide用加载二进制流来加载图片
         holder.course.setText(noteBean.getCourse());
         holder.date.setText(noteBean.getDate());
         holder.title.setText(noteBean.getTitle());
         holder.url.setText(noteBean.getContentMap());
+        if (noteBean.getContent()!=null){
+            if (!noteBean.getContent().isEmpty()) {
+                holder.content_text.setText(noteBean.getContent());
+                holder.content.setVisibility(View.INVISIBLE);
+                holder.url.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     @Override
@@ -139,6 +193,7 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
         private final ImageView content;
         private final ImageButton collection;
         private final TextView url;
+        private final TextView content_text;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -148,11 +203,13 @@ public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapt
             date = itemView.findViewById(R.id.tv_notepager_date);
             content = itemView.findViewById(R.id.tv_notepager_content);
             collection = itemView.findViewById(R.id.ib_collection);
+            content_text = itemView.findViewById(R.id.tv_notepager_content_text);
         }
     }
 
     private void deleteAnim(View inflate, ViewHolder viewHolder) {
         change(inflate,viewHolder);
+
     }
     private void change(View inflate, ViewHolder viewHolder) {
         if (isDeleteAble) {//此时为增加动画效果，刷新部分数据源，防止删除错乱

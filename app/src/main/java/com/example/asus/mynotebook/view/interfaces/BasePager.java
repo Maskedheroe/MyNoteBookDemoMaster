@@ -29,4 +29,6 @@ public abstract class BasePager implements IBasePage{
         frame_Content_Layout = view.findViewById(R.id.fl_content);
         return view;
     }
+
+
 }

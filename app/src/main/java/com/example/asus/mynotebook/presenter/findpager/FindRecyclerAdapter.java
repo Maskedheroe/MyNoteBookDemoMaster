@@ -2,6 +2,7 @@ package com.example.asus.mynotebook.presenter.findpager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import com.example.asus.mynotebook.R;
 import com.example.asus.mynotebook.flags.Flags;
 import com.example.asus.mynotebook.model.CollectionBean;
 import com.example.asus.mynotebook.model.NoteBean;
+import com.example.asus.mynotebook.presenter.mainpager.BlankFragment;
 import com.example.asus.mynotebook.utils.GlideImageLoader;
+import com.example.asus.mynotebook.utils.GlideLoadUtils;
 
 import org.litepal.crud.DataSupport;
 
@@ -27,12 +30,15 @@ import java.util.List;
 public class FindRecyclerAdapter extends RecyclerView.Adapter<FindRecyclerAdapter.ViewHolder> {
 
 
+    private final int mSearchOnnote;
     private ArrayList noteList;
     private Context context;
 
 
-        public FindRecyclerAdapter(List noteBeans, Activity mactivity, int searchOnnote) {
-        this.context = context;
+    public FindRecyclerAdapter(List noteBeans, Activity mactivity, int searchOnnote) {
+        this.context = mactivity;
+
+        mSearchOnnote = searchOnnote;
         if (searchOnnote == Flags.SEARCH_ONNOTE){
             this.noteList = (ArrayList<NoteBean>) noteBeans;
         }else {
@@ -69,17 +75,24 @@ public class FindRecyclerAdapter extends RecyclerView.Adapter<FindRecyclerAdapte
 
     @Override
     public void onBindViewHolder(FindRecyclerAdapter.ViewHolder holder, int position) {
-        if (Flags.SEARCH_STATE == Flags.SEARCH_ONNOTE){
+        if (mSearchOnnote == Flags.SEARCH_ONNOTE){
             NoteBean noteBean = (NoteBean) noteList.get(position);
             holder.title.setText(noteBean.getTitle());
             holder.course.setText(noteBean.getCourse());
-            holder.content.setText(noteBean.getContent());
+            if (noteBean.getContent()!=null)
+              holder.content.setText(noteBean.getContent());
         }else {
             CollectionBean noteBean = (CollectionBean) noteList.get(position);
+//           ArrayList<CollectionBean>noteLists = BlankFragment.getData("语文");
+//            CollectionBean noteBean = noteLists.get(position);
             holder.title.setText(noteBean.getTitle());
             holder.course.setText(noteBean.getCourse());
-            Glide.with(context).load(noteBean.getContentMap()).into(holder.iv_content);//Glide用加载二进制流来加载图片
-            GlideImageLoader.glideLoaderByURL(context,noteBean.getContentMap(),holder.iv_content);
+//            GlideImageLoader.glideLoaderByURL(,noteBean.getContentMap(),holder.iv_content);
+//           new GlideLoadUtils().glideLoad(context,noteBean.getContentMap(),holder.iv_content,0);
+
+            if (noteBean.getContentMap()!=null) {
+                GlideImageLoader.glideLoaderByURL(context, noteBean.getContentMap(),holder.iv_content);
+            }
         }
     }
 

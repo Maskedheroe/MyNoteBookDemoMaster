@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 public class DataBaseUtils {
 
-    private static SQLiteDatabase db;
+    private static SQLiteDatabase db;//此处拿到数据库的引用，对sqlite进行操作
 
     public static void getUser(Context context, String string) {
         db = new MyDBHelper(context, string, null, 2).getWritableDatabase();
@@ -15,7 +15,7 @@ public class DataBaseUtils {
         db.execSQL("insert into Book(name, author, pagesm, price) values(?,?,?,?)",
                 new String[]{ "f234567","User", "1234567", null});
         db.execSQL("insert into Book(name, author, pagesm, price) values(?,?,?,?)",
-                new String[]{ "1","User", "1234567", null});  //账号不合格
+                new String[]{ "1","User", "1234567", null});  //
     }
 
     public static void upgreade(){

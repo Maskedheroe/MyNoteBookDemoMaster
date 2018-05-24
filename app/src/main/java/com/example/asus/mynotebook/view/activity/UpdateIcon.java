@@ -58,14 +58,14 @@ public class UpdateIcon extends AppCompatActivity {
             if (data != null && requestCode == 1) {
                 ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
                 imagePath  = images.get(0).path;
-                sendImagePath();
+                sendImagePath(imagePath);
             } else {
                 Toast.makeText(this, "没有数据", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void sendImagePath() {
+    private void sendImagePath(String imagePath) {
         Intent intent = new Intent(this,MainActivity.class);
         Bundle mBundle = new Bundle();
         mBundle.putString("icon", imagePath);//压入数据

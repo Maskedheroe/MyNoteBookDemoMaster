@@ -7,6 +7,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -17,6 +18,7 @@ import com.example.asus.mynotebook.view.interfaces.BaseFragrment;
 import com.example.asus.mynotebook.view.interfaces.BasePager;
 import com.example.asus.mynotebook.view.pages.findpager.FindPager;
 import com.example.asus.mynotebook.view.pages.mainpager.MainPager;
+import com.example.asus.mynotebook.view.pages.mainpager.NewMainPager;
 import com.example.asus.mynotebook.view.pages.minepager.MinePager;
 import com.example.asus.mynotebook.view.pages.notepager.NotePager;
 
@@ -93,10 +95,12 @@ public class ContentFragement extends BaseFragrment {
         content.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
             public void onPageSelected(int position) {
+
                 BasePager pager = mPagers.get(position);
                 pager.initData(); //每次切换过来都要进行初始化数据
             }

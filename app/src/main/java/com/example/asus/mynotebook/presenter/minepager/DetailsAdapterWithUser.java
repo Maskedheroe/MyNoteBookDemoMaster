@@ -3,6 +3,7 @@ package com.example.asus.mynotebook.presenter.minepager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -41,8 +42,7 @@ public class DetailsAdapterWithUser extends RecyclerView.Adapter<DetailsAdapterW
         TextView tvUlUserAccountID;
         @BindView(R.id.tv_ulUserAccountPWD)
         TextView tvUlUserAccountPWD;
-        @BindView(R.id.tv_ulUserAccountCollects)
-        TextView tvUlUserAccountCollects;
+
         @BindView(R.id.rl_users)
         RelativeLayout rlUsers;
         public ViewHolder(View itemView) {
@@ -50,7 +50,7 @@ public class DetailsAdapterWithUser extends RecyclerView.Adapter<DetailsAdapterW
             tvUlUserName = itemView.findViewById(R.id.tv_ulUserName);
             tvUlUserAccountID = itemView.findViewById(R.id.tv_ulUserAccountID);
             tvUlUserAccountPWD = itemView.findViewById(R.id.tv_ulUserAccountPWD);
-            tvUlUserAccountCollects = itemView.findViewById(R.id.tv_ulUserAccountCollects);
+//            tvUlUserAccountCollects = itemView.findViewById(R.id.tv_ulUserAccountCollects);
             rlUsers= itemView.findViewById(R.id.rl_users);
         }
     }
@@ -112,11 +112,14 @@ public class DetailsAdapterWithUser extends RecyclerView.Adapter<DetailsAdapterW
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         UserBean userBean = mUserList.get(position);
         holder.tvUlUserName.append(userBean.getUserName());
         holder.tvUlUserAccountID.append(userBean.getId()+"");
         holder.tvUlUserAccountPWD.append(userBean.getUserPwd());
-        holder.tvUlUserAccountCollects.append(userBean.getCollectionBeans()+"");
+//        List<CollectionBean> collectionBeans = DataSupport.where("id = ?", userBean.getId() + "").find(CollectionBean.class);
+//        holder.tvUlUserAccountCollects.append(collectionBeans.size()+"个");
+
     }
 
 

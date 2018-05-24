@@ -35,7 +35,7 @@ public class GuidFloat {
     public static void addGuide(Context context, String label, View view, int layoutId) {
         NewbieGuide.with((Activity) context)
                 .setLabel("LoginLabel")
-                .setShowCounts(1)
+                .setShowCounts(4)
                 .addGuidePage(GuidePage.newInstance()
                         .addHighLight(view,HighLight.Shape.RECTANGLE)
                         .setLayoutRes(layoutId)
