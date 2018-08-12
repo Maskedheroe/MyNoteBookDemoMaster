@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import com.example.asus.mynotebook.R;
 import com.example.asus.mynotebook.model.CollectionBean;
 import com.example.asus.mynotebook.model.NoteBean;
+import com.example.asus.mynotebook.utils.DividerItemDecoration;
 import com.example.asus.mynotebook.utils.DrawableToBytes;
 import com.yalantis.phoenix.PullToRefreshView;
 
@@ -72,6 +73,7 @@ public class BlankFragment extends Fragment {
     public void initNoteCollections(final RecyclerView noteCollections) {
 
         noteCollections.setLayoutManager(new LinearLayoutManager(getContext()));
+        noteCollections.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL_LIST));
         if (collectionBeans!=null)
         collectionBeans.clear();
         collectionBeans = DataSupport.where("course = ?", course).find(CollectionBean.class);
@@ -101,8 +103,7 @@ public class BlankFragment extends Fragment {
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                             MainRecyclerAdapter mainRecyclerAdapter = new MainRecyclerAdapter(getContext(), (ArrayList<CollectionBean>) collectionBeans);
-
+                                    MainRecyclerAdapter mainRecyclerAdapter = new MainRecyclerAdapter(getContext(), (ArrayList<CollectionBean>) collectionBeans);
                                     noteCollections.setAdapter(mainRecyclerAdapter);
                                     mainRecyclerAdapter.notifyDataSetChanged();
                                 }

@@ -40,7 +40,7 @@ import tyrantgit.explosionfield.ExplosionField;
 public class MainRecyclerAdapter  extends RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>{
     private final Context context;
     public ArrayList<CollectionBean> noteLists;
-    private boolean isDeleteAble = true;
+    private  boolean isDeleteAble = true;
 
     public MainRecyclerAdapter(Context context, ArrayList<CollectionBean> noteLists) {
         this.context = context;

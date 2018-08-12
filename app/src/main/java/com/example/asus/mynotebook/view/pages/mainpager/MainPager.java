@@ -51,23 +51,27 @@ public class MainPager extends BasePager {
     private List<String> titleList;
     private MainViewPagerAdapter viewPagerAdapter;
     private FloatingActionButton fab;
+    private final View view;
 
     public MainPager(Activity activity, FragmentManager mFragmentManager) {
         super(activity);
         fragmentManager = mFragmentManager;
-    }
-
-
-
-    @Override
-    public void initData() {
-        View view = View.inflate(mactivity, R.layout.pager_main, null);
+        view = View.inflate(mactivity, R.layout.pager_main, null);
         frame_Content_Layout.addView(view);
         tablayout = view.findViewById(R.id.tabLayout);
         vp_main = view.findViewById(R.id.vp_main);
 
         fab = view.findViewById(R.id.fab_manager);
         initManager();
+
+    }
+
+
+
+    @Override
+    public void initData() {
+
+
 
 
         initTablayout();
@@ -103,7 +107,7 @@ public class MainPager extends BasePager {
 
         fragmentList = new ArrayList<>();
         titleList = new ArrayList<>();
-//        if (fragmentList.size()==0){
+        if (fragmentList.isEmpty()){
             fragmentList.add(new BlankFragment("数学"));
             fragmentList.add(new BlankFragment("语文"));
             fragmentList.add(new BlankFragment("英语"));
@@ -113,8 +117,8 @@ public class MainPager extends BasePager {
             fragmentList.add(new BlankFragment("历史"));
             fragmentList.add(new BlankFragment("地理"));
             fragmentList.add(new BlankFragment("政治"));
-//        }
-//        if (titleList.size() == 0) {
+        }
+        if (titleList.isEmpty()) {
             titleList.add("数学");
             titleList.add("语文");
             titleList.add("英语");
@@ -124,8 +128,8 @@ public class MainPager extends BasePager {
             titleList.add("历史");
             titleList.add("地理");
             titleList.add("政治");
-//        }
-//        if (tablayout.getTabCount() == 0) {
+        }
+        if (tablayout.getTabCount() == 0) {
             tablayout.addTab(tablayout.newTab().setText("数学"));
             tablayout.addTab(tablayout.newTab().setText("语文"));
             tablayout.addTab(tablayout.newTab().setText("英语"));
@@ -135,15 +139,15 @@ public class MainPager extends BasePager {
             tablayout.addTab(tablayout.newTab().setText("历史"));
             tablayout.addTab(tablayout.newTab().setText("地理"));
             tablayout.addTab(tablayout.newTab().setText("政治"));
-//        }
-        if (viewPagerAdapter == null) {
+        }
+//        if (viewPagerAdapter == null) {
             viewPagerAdapter = new MainViewPagerAdapter(fragmentManager, fragmentList, titleList);
             //每次进行初始化即可
             vp_main.setAdapter(viewPagerAdapter);
 
-        }else {
+//        }else {
             viewPagerAdapter.notifyDataSetChanged();
-        }
+//        }
 
         tablayout.setupWithViewPager(vp_main);
 
